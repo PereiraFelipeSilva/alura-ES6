@@ -6,29 +6,27 @@ class NegociacaoController {
       this._inputData = $('#data');
       this._inputQuantidade = $('#quantidade');
       this._inputValor = $('#valor');
+      this._listaNegociacoes = new ListaNegociacoes();
    }
 
    adiciona(event){
 
       event.preventDefault();
 
-      let data = new Date(...
-         this._inputData.value
-            .split('-')
-            .map((item, indice) => item - indice % 2)
-      );
-
-      /* ... spread operator faz com que a função de map seja aplicada em todos os itens de um array;
-      função split que transforma a string em um array utilizando o parâmetro passado como separador;
-      uso de arrow function. Não faz uso da palavra 'function' e como a função tem apenas um retorno, não se usa o return nem {} */
-
       let negociacao = new Negociacao(
-         data,
+         DateHelper.textoParaData(this._inputData.value),
          this._inputQuantidade.value,
          this._inputValor.value
       );
 
+      this._listaNegociacoes.adiciona(negociacao);
+
       console.log(negociacao);
+      console.log(DateHelper.dataParaTexto(negociacao.data))
+   }
+
+   _limpaFormulario(){
+
       this._inputData.value = '';
       this._inputQuantidade.value = 1;
       this._inputValor.value = 0.0;
