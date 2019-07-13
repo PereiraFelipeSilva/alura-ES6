@@ -1,24 +1,27 @@
 class NegociacaoService{
 
-  obterNegociacoesDaSemana(callbackfunction){
+  obterNegociacoes(week){
 
-  let xhr = new XMLHttpRequest;
-    xhr.open('GET', 'negociacoes/semana');
-    xhr.onreadystatechange = ()=> {
+    return new Promise((resolve, reject) => {
 
-      if(xhr.readyState == 4){
-        
-        if(xhr.status == 200){
-
-          callbackfunction(null, JSON.parse(xhr.responseText)
-            .map(objeto => new Negociacao(new Date(objeto.data), objeto.quantidade, objeto.valor)));
-        } else {
-
-          console.log(xhr.responseText);
-          callbackfunction('Não foi possível recuperar as informações do servidor.', null);
+      let xhr = new XMLHttpRequest;
+        xhr.open('GET', `negociacoes/${week}`);
+        xhr.onreadystatechange = ()=> {
+    
+          if(xhr.readyState == 4){
+            
+            if(xhr.status == 200){
+    
+              resolve(JSON.parse(xhr.responseText)
+                .map(objeto => new Negociacao(new Date(objeto.data), objeto.quantidade, objeto.valor)));
+            } else {
+    
+              console.log(xhr.responseText);
+              reject('Não foi possível recuperar as informações do servidor.');
+            }
+          }
         }
-      }
-    }
-    xhr.send();
+      xhr.send();
+    });
   }
 }
