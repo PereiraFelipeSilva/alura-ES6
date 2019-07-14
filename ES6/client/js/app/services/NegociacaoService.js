@@ -20,7 +20,7 @@ class NegociacaoService{
         .catch(erro => {
           console.log(erro);
           reject('Não foi possível recuperar as informações do servidor.');
-        });
-    });
+        })
+    })
   }
 }
