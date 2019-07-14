@@ -8,12 +8,12 @@ class ListaNegociacoes{
    adiciona(negociacao){
 
       this._negociacoes.push(negociacao);
-   };
+   }
 
    get negociacoes(){
 
       return [].concat(this._negociacoes);
-   };
+   }
 
    get volumeTotal(){
 
@@ -23,5 +23,5 @@ class ListaNegociacoes{
    esvazia(){
 
       this._negociacoes = [];
-   };
-};
+   }
+}
