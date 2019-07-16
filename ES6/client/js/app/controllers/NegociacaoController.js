@@ -68,7 +68,9 @@ class NegociacaoController {
       );
    }
 
-   _limpaFormulario(){
+   _limpaFormulario(event){
+
+      event.preventDefault();
 
       this._inputData.value = '';
       this._inputQuantidade.value = 1;
