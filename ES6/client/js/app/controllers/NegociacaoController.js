@@ -68,10 +68,8 @@ class NegociacaoController {
       );
    }
 
-   _limpaFormulario(event){
-
-      event.preventDefault();
-
+   _limpaFormulario(){
+      
       this._inputData.value = '';
       this._inputQuantidade.value = 1;
       this._inputValor.value = 0.0;
@@ -88,6 +86,5 @@ class NegociacaoController {
          this._listaNegociacoes.ordenarColuna((a, b) => a[coluna] - b[coluna]);
       }
       this._ordemAtual = coluna;
-      this._limpaFormulario();
    }
 }
