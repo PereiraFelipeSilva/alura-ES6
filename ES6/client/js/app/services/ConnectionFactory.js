@@ -1,9 +1,10 @@
 const ConnectionFactory = (function(){
 
-  let stores = ['negociacoes'];
-  let version = 4;
-  let dbName = 'aluraframe';
+  const stores = ['negociacoes'];
+  const version = 4;
+  const dbName = 'aluraframe';
   let connection = null;
+  let close = null;
   
   return class ConnectionFactory {
   
@@ -16,7 +17,7 @@ const ConnectionFactory = (function(){
   
       return new Promise((resolve, reject) => {
   
-        const openRequest = window.indexedDB.open(dbName, version);
+        let openRequest = window.indexedDB.open(dbName, version);
     
         openRequest.onupgradeneeded = e => {
     
@@ -25,7 +26,13 @@ const ConnectionFactory = (function(){
     
         openRequest.onsuccess = e => {
     
-          if(!connection) connection = e.target.result;
+          if(!connection){
+            connection = e.target.result;
+            close = connection.close.bind(connection);
+            connection.close = function() {
+              throw new Error('A conexão só pode ser fechada pela própria classe')
+            };
+          };
           resolve(connection);
         };
     
@@ -49,5 +56,11 @@ const ConnectionFactory = (function(){
         connection.createObjectStore(store, { autoIncrement: true });
       });
     };
-  }
+
+    static closeConnection(){
+
+      close();
+      connection = null;
+    };
+  };
 })();
