@@ -20,15 +20,15 @@ class NegociacaoController {
          'texto');
 
       ConnectionFactory.getConnection()
-         .then(connection => {
+         .then(connection => new NegociacaoDao(connection))
+         .then(dao => dao.listaTodos())
+         .then(negociacoes =>
+            negociacoes.forEach(negociacao => 
+               this._listaNegociacoes.adiciona(negociacao)))
+         .catch(erro => {
 
-            new NegociacaoDao(connection)
-               .listaTodos()
-               .then(negociacoes => {
-                  negociacoes.forEach(negociacao => {
-                     this._listaNegociacoes.adiciona(negociacao);
-                  })
-               })
+            console.log(erro);
+            this._mensagem.texto = erro;
          })
    }
 
@@ -79,17 +79,23 @@ class NegociacaoController {
 
    apaga(){
 
-      this._listaNegociacoes.esvazia();
-      this._mensagem.texto = 'Negociações excluídas com sucesso!';
-      this._limpaFormulario();
+      ConnectionFactory.getConnection()
+         .then(connection => new NegociacaoDao(connection))
+         .then(dao => dao.apagaTodos())
+         .then(mensagem => {
+
+            this._mensagem.texto = mensagem;
+            this._listaNegociacoes.esvazia();
+            this._limpaFormulario();
+         })
    }
 
    _criaNegociacao(){
 
       return new Negociacao(
          DateHelper.textoParaData(this._inputData.value),
-         Number(this._inputQuantidade.value),
-         Number(this._inputValor.value)
+         parseInt(this._inputQuantidade.value),
+         parseFloat(this._inputValor.value)
       );
    }
 
