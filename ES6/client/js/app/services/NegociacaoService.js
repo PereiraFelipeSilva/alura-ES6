@@ -83,4 +83,21 @@ class NegociacaoService{
         throw new Error('Não foi possível excluir as negociações.');
     })
   }
+
+  importa(listaAtual){
+
+    return this.obterNegociacoes()
+      .then(negociacoes => 
+        negociacoes.filter(negociacao => 
+          !listaAtual.some(negociacaoExistente => 
+            negociacao.isEquals(negociacaoExistente)
+          )
+        )
+      )
+      .catch(erro => {
+
+        console.log(erro);
+        throw new Error('Não foi possível importar as negociações do servidor.');
+      })
+  }
 }
