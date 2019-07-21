@@ -19,17 +19,27 @@ class NegociacaoController {
          new MensagemView($('#mensagemView')),
          'texto');
 
-      ConnectionFactory.getConnection()
-         .then(connection => new NegociacaoDao(connection))
-         .then(dao => dao.listaTodos())
-         .then(negociacoes =>
-            negociacoes.forEach(negociacao => 
-               this._listaNegociacoes.adiciona(negociacao)))
-         .catch(erro => {
+         this._init();
+      }
+      
+      _init(){
 
-            console.log(erro);
-            this._mensagem.texto = erro;
-         })
+         ConnectionFactory.getConnection()
+            .then(connection => new NegociacaoDao(connection))
+            .then(dao => dao.listaTodos())
+            .then(negociacoes =>
+               negociacoes.forEach(negociacao => 
+                  this._listaNegociacoes.adiciona(negociacao)))
+            .catch(erro => {
+   
+               console.log(erro);
+               this._mensagem.texto = erro;
+            })
+   
+         setInterval(()=>{
+   
+            this.importarNegociacoes();
+         }, 5000);
    }
 
    adiciona(event){
@@ -65,7 +75,6 @@ class NegociacaoController {
       )
       .then(negociacoes => {
          negociacoes.forEach(negociacao => this._listaNegociacoes.adiciona(negociacao));
-         this._mensagem.texto = 'Negociações do período importadas com sucesso';
        })
        .catch(error => this._mensagem.texto = error);
    }
@@ -79,7 +88,6 @@ class NegociacaoController {
 
             this._mensagem.texto = mensagem;
             this._listaNegociacoes.esvazia();
-            this._limpaFormulario();
          })
    }
 

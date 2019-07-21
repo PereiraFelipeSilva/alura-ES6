@@ -13,7 +13,6 @@ class NegociacaoService{
         .get(`negociacoes/${week}`)
         .then(negociacoes => {
 
-          console.log(negociacoes);
           resolve(negociacoes.map(objeto => 
             new Negociacao(new Date(objeto.data), objeto.quantidade, objeto.valor)))
         })
