@@ -5,7 +5,7 @@ class NegociacaoService{
     this._httpService = new HttpService();
   }
 
-  obterNegociacoes(week){
+  obterNegociacoesDaSemana(week){
 
     return new Promise((resolve, reject) => {
 
@@ -22,5 +22,25 @@ class NegociacaoService{
           reject('Não foi possível recuperar as informações do servidor.');
         })
     })
+  }
+
+  obterNegociacoes(){
+
+    return new Promise((resolve, reject) => {
+
+      Promise.all([
+          this.obterNegociacoesDaSemana('semana'),
+          this.obterNegociacoesDaSemana('anterior'),
+          this.obterNegociacoesDaSemana('retrasada')
+      ]).then(periodos => {
+
+          let negociacoes = periodos
+              .reduce((dados, periodo) => dados.concat(periodo), [])
+              .map(dado => new Negociacao(new Date(dado.data), dado.quantidade, dado.valor ));
+
+          resolve(negociacoes);
+
+      }).catch(erro => reject(erro));
+    });
   }
 }
