@@ -1,4 +1,7 @@
 exercicios/
 server/node_modules/
 server/package.json
-
+client/js/app/
+client/package.json
+client/package-lock.json
+client/node_modules/
