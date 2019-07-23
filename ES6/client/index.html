@@ -13,7 +13,7 @@
         <div id="mensagemView"></div>
     </header>
     <main>
-        <form class="form" onsubmit="negociacaoController.adiciona(event)">
+        <form class="form">
             
             <div class="form-group">
                 <label for="data">Data</label>
@@ -34,7 +34,7 @@
         </form>
         
         <div class="text-center">
-            <button class="btn btn-primary text-center" type="button" onclick="negociacaoController.apaga()">
+            <button class="btn btn-primary text-center" type="button">
                 Apagar
             </button>
         </div> 
@@ -51,10 +51,6 @@
         System.import('js/app/boot').catch(function(err){
             console.log(err);
         });
-    </script>
-
-    <script>
-        let negociacaoController = new NegociacaoController();
     </script>
 </body>
 </html>
